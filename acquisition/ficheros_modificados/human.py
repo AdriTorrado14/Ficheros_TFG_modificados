@@ -49,7 +49,6 @@ class Human(QtWidgets.QGraphicsItem):
         return polygon
 
     def paint(self, painter, option, widget):
-        self.label.setPixmap(pixi)
         # Body
         painter.setBrush(self.colour)
         painter.drawEllipse(self.BoundingRect)
