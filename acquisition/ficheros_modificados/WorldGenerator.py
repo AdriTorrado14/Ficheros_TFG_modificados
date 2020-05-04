@@ -233,6 +233,9 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
                     self.addItem(human2)
                     self.humans.append(human2)
                     
+                    
+          
+                    
                 
                 """if QtCore.qrand()%3 == 0:
                     human2 = self.generateComplementaryHuman(human, availableId)
