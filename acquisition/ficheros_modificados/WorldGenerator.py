@@ -233,7 +233,16 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
                     self.addItem(human2)
                     self.humans.append(human2)
                     
-                    
+             # Calculamos el punto medio de los dos humanos.
+            x1 = human.xPos
+            y1 = human.yPos
+            x2 = human2.xPos
+            y2 = human2.yPos
+            x_pm = (x1 + x2)/2 
+            y_pm = (y1 + y2)/2 
+            punto_medio = QtCore.QPointF(x_pm, y_pm) # Coordenada x e y.
+            punto_human = QtCore.QPointF(x1, y1) # Coordenada humano 1
+            punto_human2 = QtCore.QPointF(x2, y2) # Coordenada humano 2.       
           
                     
                 
@@ -253,10 +262,11 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
                     self.addItem(interaction)
                     self.addItem(obj)
                     self.objects.append(obj)"""
-
+                
+            # Para probar si el punto medio se asigna correctamente.
             self.robot = Robot()
-            self.robot.setPos(0, 0)
-            #self.addItem(self.robot)
+            self.robot.setPos(punto_medio)
+            self.addItem(self.robot)
 
 
         self.text = 'Humans:' + str(len(self.humans)) + ' ' + 'Objects:' + str(len(self.objects))
