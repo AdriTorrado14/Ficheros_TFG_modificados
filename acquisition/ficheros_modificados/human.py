@@ -6,7 +6,9 @@ from polygonmisc import rotatePolygon, translatePolygon
 
 
 class Human(QtWidgets.QGraphicsItem):
-    BoundingRect = QtCore.QRectF(-20, -10, 40, 20)
+    BoundingRect = QtCore.QRect(-20, -10, 40, 20)
+    #pixmap = QtGui.QPixmap("C:/Users/adrit/AppData/Local/Programs/Python/Python37/Scripts/Scripts_Ficheros_Tarea1_Modificado/person.png")
+    
 
     def __init__(self, id, xPos, yPos, angle):
         super(Human, self).__init__()
@@ -49,6 +51,7 @@ class Human(QtWidgets.QGraphicsItem):
         return polygon
 
     def paint(self, painter, option, widget):
+        #painter.drawPixmap(self.point, self.pixmap)
         # Body
         painter.setBrush(self.colour)
         painter.drawEllipse(self.BoundingRect)
