@@ -1,15 +1,13 @@
 import math
+import sys
 from PySide2 import QtCore, QtGui, QtWidgets
-
 
 from polygonmisc import rotatePolygon, translatePolygon
 
 
 class Human(QtWidgets.QGraphicsItem):
-    BoundingRect = QtCore.QRect(-20, -10, 40, 20)
-    #pixmap = QtGui.QPixmap("C:/Users/adrit/AppData/Local/Programs/Python/Python37/Scripts/Scripts_Ficheros_Tarea1_Modificado/person.png")
+    BoundingRect = QtCore.QRectF(-20, -10, 40, 20)
     
-
     def __init__(self, id, xPos, yPos, angle):
         super(Human, self).__init__()
         self.id = id
@@ -18,7 +16,9 @@ class Human(QtWidgets.QGraphicsItem):
         self.setAngle(angle)
         self.setPos(self.xPos, self.yPos)
         self.setZValue(1)
-        self.colour = QtCore.Qt.blue
+        #self.colour = QtCore.Qt.blue
+        self.colour = QtCore.Qt.transparent
+        self.pixmap = QtGui.QPixmap("C:/Users/adrit/AppData/Local/Programs/Python/Python37/Scripts/Scripts_Ficheros_Tarea1_Modificado/person.png")
 
     @classmethod
     def from_json(Human, json_data):
@@ -51,8 +51,9 @@ class Human(QtWidgets.QGraphicsItem):
         return polygon
 
     def paint(self, painter, option, widget):
-        #painter.drawPixmap(self.point, self.pixmap)
-        # Body
+        painter.drawPixmap(self.BoundingRect.toRect(), self.pixmap)
+
+        """# Body
         painter.setBrush(self.colour)
         painter.drawEllipse(self.BoundingRect)
         # Eyes
@@ -62,5 +63,5 @@ class Human(QtWidgets.QGraphicsItem):
         # Pupils
         painter.setBrush(QtCore.Qt.black)
         painter.drawEllipse(QtCore.QRectF(-8-2, -9-2, 4, 4))
-        painter.drawEllipse(QtCore.QRectF(+8-2, -9-2, 4, 4))
+        painter.drawEllipse(QtCore.QRectF(+8-2, -9-2, 4, 4))"""
 
