@@ -8,8 +8,8 @@ from polygonmisc import translatePolygon, movePolygon
 def getRectRoom():
     #w = min(10, abs(random.normalvariate(1.5, 2.5))+1.5)/2 * 100
     #h = min(10, abs(random.normalvariate(3.0, 2.5))+4.0)/2 * 100
-    w = 150
-    h = 150
+    w = 180
+    h = 180
 
     polygon = QtGui.QPolygon()
     polygon.append( QtCore.QPoint(-w, -h) )
