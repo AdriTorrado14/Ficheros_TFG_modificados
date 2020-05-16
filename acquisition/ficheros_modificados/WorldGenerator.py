@@ -11,6 +11,7 @@ from robot import Robot
 from regularobject import RegularObject
 from room import Room
 from interaction import Interaction
+from line import Line 
 
 from collections import defaultdict
 from scipy.spatial import distance
@@ -335,7 +336,7 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
             # Para poder calcular los puntos de la nueva pared que pasan por el punto medio se necesitan que dos o mas segmentos
             # sean paralelos. Funciona para 6 o menos segmentos.
             
-            if ((len(posiciones) <= 3 and len(posiciones) != 0) and (contador == 2 or contador == 4 or contador == 6)): #and not(len(posiciones) == 2 and contador == 6 )):
+            if ((len(posiciones) <= 3 and len(posiciones) != 0) and (contador == 2 or contador == 4 or contador == 6)): 
                 for m in range(len(posiciones)):
                     for h in range(len(posiciones[m])):
                         auxiliar = posiciones[m][h]
@@ -391,25 +392,19 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
                         if (listaComp[0] == 1 and listaComp[1] == 1):
                             # Para averiguar los angulos del vercite primero y el vertice segundo.
                             A = (distPM_P2[0]**2 - distPM_P1[0]**2 - distPuntos[0]**2) / (-2 * distPM_P1[0] * distPuntos[0]) # Angulo A (primer angulo formante) correspondiente al vertice del punto 1.
-                            cosA =math.acos(A)
-                            anguloA = cosA * (180 / math.pi)
+                            cosA =math.acos(A); anguloA = cosA * (180 / math.pi)
 
                             B = (distPM_P1[0]**2 - distPM_P2[0]**2 - distPuntos[0]**2) / (-2 * distPM_P2[0] * distPuntos[0]) # Angulo B (segundo angulo formante) correspondiente al vertice del punto2.
-                            cosB = math.acos(B)
-                            anguloB = cosB * (180 / math.pi)
+                            cosB = math.acos(B); anguloB = cosB * (180 / math.pi)
                 
                             C = (distPuntos[0]**2 - distPM_P2[0]**2 - distPM_P1[0]**2) / (-2 * distPM_P2[0] * distPM_P1[0]) # Angulo C (tercer angulo formante) correspondiente al vertice del punto medio.
-                            cosC = math.acos(C)
-                            anguloC = cosC * (180 / math.pi)
+                            cosC = math.acos(C); anguloC = cosC * (180 / math.pi)
                 
                             # Para averiguar la proyección existente entre las distancias que van de el punto medio hacia los distintos vertices. ( m = primera proyección, n = segunda proyeccion)
                             # m = primera proyección. Sobre el angulo A. n = segunda proyección. Sobre el angulo B.
-                            angA = math.radians(anguloA)
-                            m = distPM_P1[0] * math.cos(angA)
-
-                            angB = math.radians(anguloB)
-                            n = distPM_P2[0] * math.cos(angB)
-
+                            angA = math.radians(anguloA); m = distPM_P1[0] * math.cos(angA)                            
+                            angB = math.radians(anguloB); n = distPM_P2[0] * math.cos(angB)
+                            
                             # Para averiguar el punto que divide a ese segmento.
                             razon = m / n # Razon entre segmentos
                             X = ((laux[0][0] + (razon * laux[1][0])) / (1 + razon)) # Punto X de la intersección.
@@ -419,24 +414,18 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
                             ############################"""
                 
                             A_2 = (distPM_P2[1]**2 - distPM_P1[1]**2 - distPuntos[1]**2) / (-2 * distPM_P1[1] * distPuntos[1]) # Angulo A (primer angulo formante) correspondiente al vertice del punto 1.
-                            cosA_2 =math.acos(A_2)
-                            anguloA_2 = cosA_2 * (180 / math.pi)
+                            cosA_2 =math.acos(A_2); anguloA_2 = cosA_2 * (180 / math.pi)
 
                             B_2 = (distPM_P1[1]**2 - distPM_P2[1]**2 - distPuntos[1]**2) / (-2 * distPM_P2[1] * distPuntos[1]) # Angulo B (segundo angulo formante) correspondiente al vertice del punto2.
-                            cosB_2 = math.acos(B_2)
-                            anguloB_2 = cosB_2 * (180 / math.pi)
+                            cosB_2 = math.acos(B_2); anguloB_2 = cosB_2 * (180 / math.pi)
                 
                             C_2 = (distPuntos[1]**2 - distPM_P2[1]**2 - distPM_P1[1]**2) / (-2 * distPM_P2[1] * distPM_P1[1]) # Angulo C (tercer angulo formante) correspondiente al vertice del punto medio.
-                            cosC_2 = math.acos(C_2)
-                            anguloC_2 = cosC_2 * (180 / math.pi)
+                            cosC_2 = math.acos(C_2); anguloC_2 = cosC_2 * (180 / math.pi)
 
                             # Para averiguar la proyección existente entre las distancias que van de el punto medio hacia los distintos vertices. ( m = primera proyección, n = segunda proyeccion)
                             # m = primera proyección. Sobre el angulo A. n = segunda proyección. Sobre el angulo B.
-                            angA_2 = math.radians(anguloA_2)
-                            m_2 = distPM_P1[1] * math.cos(angA_2)
-
-                            angB_2 = math.radians(anguloB_2)
-                            n_2 = distPM_P2[1] * math.cos(angB_2)
+                            angA_2 = math.radians(anguloA_2); m_2 = distPM_P1[1] * math.cos(angA_2)
+                            angB_2 = math.radians(anguloB_2); n_2 = distPM_P2[1] * math.cos(angB_2)
 
                             # Para averiguar el punto que divide a ese segmento.
                             razon_2 = m_2 / n_2 # Razon entre segmentos
@@ -447,259 +436,172 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
                         
                     elif (cont == 4):
                         if (listaComp[0] == 1 and listaComp[1] == 1):
-                            A = (distPM_P2[0]**2 - distPM_P1[0]**2 - distPuntos[0]**2) / (-2 * distPM_P1[0] * distPuntos[0]) # Angulo A (primer angulo formante) correspondiente al vertice del punto 1.
-                            cosA =math.acos(A)
-                            anguloA = cosA * (180 / math.pi)
+                            A = (distPM_P2[0]**2 - distPM_P1[0]**2 - distPuntos[0]**2) / (-2 * distPM_P1[0] * distPuntos[0]); cosA =math.acos(A); cosA =math.acos(A); anguloA = cosA * (180 / math.pi)
 
-                            B = (distPM_P1[0]**2 - distPM_P2[0]**2 - distPuntos[0]**2) / (-2 * distPM_P2[0] * distPuntos[0]) # Angulo B (segundo angulo formante) correspondiente al vertice del punto2.
-                            cosB = math.acos(B)
-                            anguloB = cosB * (180 / math.pi)
-                
-                            C = (distPuntos[0]**2 - distPM_P2[0]**2 - distPM_P1[0]**2) / (-2 * distPM_P2[0] * distPM_P1[0]) # Angulo C (tercer angulo formante) correspondiente al vertice del punto medio.
-                            cosC = math.acos(C)
-                            anguloC = cosC * (180 / math.pi)
-                
-                            angA = math.radians(anguloA)
-                            m = distPM_P1[0] * math.cos(angA)
+                            B = (distPM_P1[0]**2 - distPM_P2[0]**2 - distPuntos[0]**2) / (-2 * distPM_P2[0] * distPuntos[0]); cosB = math.acos(B); anguloB = cosB * (180 / math.pi)
 
-                            angB = math.radians(anguloB)
-                            n = distPM_P2[0] * math.cos(angB)
+                            C = (distPuntos[0]**2 - distPM_P2[0]**2 - distPM_P1[0]**2) / (-2 * distPM_P2[0] * distPM_P1[0]); cosC = math.acos(C); anguloC = cosC * (180 / math.pi)
+                
+                            angA = math.radians(anguloA); m = distPM_P1[0] * math.cos(angA)
+                            angB = math.radians(anguloB); n = distPM_P2[0] * math.cos(angB)
 
                             razon = m / n # Razon entre segmentos
-                            X = ((laux[0][0] + (razon * laux[1][0])) / (1 + razon)) # Punto X de la intersección.
-                            Y = ((laux[0][1] + (razon * laux[1][1])) / (1 + razon)) # Punto Y de la intersección.
+                            X = ((laux[0][0] + (razon * laux[1][0])) / (1 + razon)); Y = ((laux[0][1] + (razon * laux[1][1])) / (1 + razon)) 
 
                             """##### Segundo Segmento #####
                             ############################"""
-                            A_2 = (distPM_P2[1]**2 - distPM_P1[1]**2 - distPuntos[1]**2) / (-2 * distPM_P1[1] * distPuntos[1]) # Angulo A (primer angulo formante) correspondiente al vertice del punto 1.
-                            cosA_2 =math.acos(A_2)
-                            anguloA_2 = cosA_2 * (180 / math.pi)
+                            A_2 = (distPM_P2[1]**2 - distPM_P1[1]**2 - distPuntos[1]**2) / (-2 * distPM_P1[1] * distPuntos[1]); cosA_2 =math.acos(A_2); anguloA_2 = cosA_2 * (180 / math.pi)
 
-                            B_2 = (distPM_P1[1]**2 - distPM_P2[1]**2 - distPuntos[1]**2) / (-2 * distPM_P2[1] * distPuntos[1]) # Angulo B (segundo angulo formante) correspondiente al vertice del punto2.
-                            cosB_2 = math.acos(B_2)
-                            anguloB_2 = cosB_2 * (180 / math.pi)
+                            B_2 = (distPM_P1[1]**2 - distPM_P2[1]**2 - distPuntos[1]**2) / (-2 * distPM_P2[1] * distPuntos[1]); cosB_2 = math.acos(B_2); anguloB_2 = cosB_2 * (180 / math.pi)
                 
-                            C_2 = (distPuntos[1]**2 - distPM_P2[1]**2 - distPM_P1[1]**2) / (-2 * distPM_P2[1] * distPM_P1[1]) # Angulo C (tercer angulo formante) correspondiente al vertice del punto medio.
-                            cosC_2 = math.acos(C_2)
-                            anguloC_2 = cosC_2 * (180 / math.pi)
+                            C_2 = (distPuntos[1]**2 - distPM_P2[1]**2 - distPM_P1[1]**2) / (-2 * distPM_P2[1] * distPM_P1[1]); cosC_2 = math.acos(C_2); anguloC_2 = cosC_2 * (180 / math.pi)
 
-                            angA_2 = math.radians(anguloA_2)
-                            m_2 = distPM_P1[1] * math.cos(angA_2)
-
-                            angB_2 = math.radians(anguloB_2)
-                            n_2 = distPM_P2[1] * math.cos(angB_2)
+                            angA_2 = math.radians(anguloA_2); m_2 = distPM_P1[1] * math.cos(angA_2)
+                            angB_2 = math.radians(anguloB_2); n_2 = distPM_P2[1] * math.cos(angB_2)
 
                             razon_2 = m_2 / n_2 # Razon entre segmentos
-                            X_2 = ((laux[2][0] + (razon_2 * laux[3][0])) / (1 + razon_2)) # Punto X de la segunda intersección.
-                            Y_2 = ((laux[2][1] + (razon_2 * laux[3][1])) / (1 + razon_2)) # Punto Y de la segunda intersección.
+                            X_2 = ((laux[2][0] + (razon_2 * laux[3][0])) / (1 + razon_2)); Y_2 = ((laux[2][1] + (razon_2 * laux[3][1])) / (1 + razon_2)) 
                             
                             break
                                                         
                         elif (listaComp[2] == 1 and listaComp[3] == 1):
-                            A = (distPM_P2[2]**2 - distPM_P1[2]**2 - distPuntos[2]**2) / (-2 * distPM_P1[2] * distPuntos[2]) # Angulo A (primer angulo formante) correspondiente al vertice del punto 1.
-                            cosA =math.acos(A)
-                            anguloA = cosA * (180 / math.pi)
+                            A = (distPM_P2[2]**2 - distPM_P1[2]**2 - distPuntos[2]**2) / (-2 * distPM_P1[2] * distPuntos[2]); cosA =math.acos(A); anguloA = cosA * (180 / math.pi)
 
-                            B = (distPM_P1[2]**2 - distPM_P2[2]**2 - distPuntos[2]**2) / (-2 * distPM_P2[2] * distPuntos[2]) # Angulo B (segundo angulo formante) correspondiente al vertice del punto2.
-                            cosB = math.acos(B)
-                            anguloB = cosB * (180 / math.pi)
+                            B = (distPM_P1[2]**2 - distPM_P2[2]**2 - distPuntos[2]**2) / (-2 * distPM_P2[2] * distPuntos[2]); cosB = math.acos(B); anguloB = cosB * (180 / math.pi)
                 
-                            C = (distPuntos[2]**2 - distPM_P2[2]**2 - distPM_P1[2]**2) / (-2 * distPM_P2[2] * distPM_P1[2]) # Angulo C (tercer angulo formante) correspondiente al vertice del punto medio.
-                            cosC = math.acos(C)
-                            anguloC = cosC * (180 / math.pi)
+                            C = (distPuntos[2]**2 - distPM_P2[2]**2 - distPM_P1[2]**2) / (-2 * distPM_P2[2] * distPM_P1[2]); cosC = math.acos(C); anguloC = cosC * (180 / math.pi)
     
-                            angA = math.radians(anguloA)
-                            m = distPM_P1[2] * math.cos(angA)
-
-                            angB = math.radians(anguloB)
-                            n = distPM_P2[2] * math.cos(angB)
+                            angA = math.radians(anguloA); m = distPM_P1[2] * math.cos(angA)
+                            angB = math.radians(anguloB); n = distPM_P2[2] * math.cos(angB)
 
                             razon = m / n # Razon entre segmentos
-                            X = ((laux[4][0] + (razon * laux[5][0])) / (1 + razon)) # Punto X de la intersección.
-                            Y = ((laux[4][1] + (razon * laux[5][1])) / (1 + razon)) # Punto Y de la intersección.
-
+                            X = ((laux[4][0] + (razon * laux[5][0])) / (1 + razon)); Y = ((laux[4][1] + (razon * laux[5][1])) / (1 + razon))
+                        
                             """##### Segundo Segmento #####
                             ############################"""
-                            A_2 = (distPM_P2[3]**2 - distPM_P1[3]**2 - distPuntos[3]**2) / (-2 * distPM_P1[3] * distPuntos[3]) # Angulo A (primer angulo formante) correspondiente al vertice del punto 1.
-                            cosA_2 =math.acos(A_2)
-                            anguloA_2 = cosA_2 * (180 / math.pi)
+                            A_2 = (distPM_P2[3]**2 - distPM_P1[3]**2 - distPuntos[3]**2) / (-2 * distPM_P1[3] * distPuntos[3]); cosA_2 =math.acos(A_2); anguloA_2 = cosA_2 * (180 / math.pi)
 
-                            B_2 = (distPM_P1[3]**2 - distPM_P2[3]**2 - distPuntos[3]**2) / (-2 * distPM_P2[3] * distPuntos[3]) # Angulo B (segundo angulo formante) correspondiente al vertice del punto2.
-                            cosB_2 = math.acos(B_2)
-                            anguloB_2 = cosB_2 * (180 / math.pi)
+                            B_2 = (distPM_P1[3]**2 - distPM_P2[3]**2 - distPuntos[3]**2) / (-2 * distPM_P2[3] * distPuntos[3]); cosB_2 = math.acos(B_2); anguloB_2 = cosB_2 * (180 / math.pi)
                 
-                            C_2 = (distPuntos[3]**2 - distPM_P2[3]**2 - distPM_P1[3]**2) / (-2 * distPM_P2[3] * distPM_P1[3]) # Angulo C (tercer angulo formante) correspondiente al vertice del punto medio.
-                            cosC_2 = math.acos(C_2)
-                            anguloC_2 = cosC_2 * (180 / math.pi)
+                            C_2 = (distPuntos[3]**2 - distPM_P2[3]**2 - distPM_P1[3]**2) / (-2 * distPM_P2[3] * distPM_P1[3]); cosC_2 = math.acos(C_2); anguloC_2 = cosC_2 * (180 / math.pi)
 
-                            angA_2 = math.radians(anguloA_2)
-                            m_2 = distPM_P1[3] * math.cos(angA_2)
-
-                            angB_2 = math.radians(anguloB_2)
-                            n_2 = distPM_P2[3] * math.cos(angB_2)
+                            angA_2 = math.radians(anguloA_2); m_2 = distPM_P1[3] * math.cos(angA_2)
+                            angB_2 = math.radians(anguloB_2); n_2 = distPM_P2[3] * math.cos(angB_2)
 
                             razon_2 = m_2 / n_2 # Razon entre segmentos
-                            X_2 = ((laux[6][0] + (razon_2 * laux[7][0])) / (1 + razon_2)) # Punto X de la segunda intersección.
-                            Y_2 = ((laux[6][1] + (razon_2 * laux[7][1])) / (1 + razon_2)) # Punto Y de la segunda intersección.
+                            X_2 = ((laux[6][0] + (razon_2 * laux[7][0])) / (1 + razon_2)); Y_2 = ((laux[6][1] + (razon_2 * laux[7][1])) / (1 + razon_2))
 
                             break
 
                     elif (cont == 6):
                         if (listaComp[0] == 1 and listaComp[1] == 1):
-                            A = (distPM_P2[0]**2 - distPM_P1[0]**2 - distPuntos[0]**2) / (-2 * distPM_P1[0] * distPuntos[0]) # Angulo A (primer angulo formante) correspondiente al vertice del punto 1.
-                            cosA =math.acos(A)
-                            anguloA = cosA * (180 / math.pi)
+                            A = (distPM_P2[0]**2 - distPM_P1[0]**2 - distPuntos[0]**2) / (-2 * distPM_P1[0] * distPuntos[0]); cosA =math.acos(A); anguloA = cosA * (180 / math.pi)
 
-                            B = (distPM_P1[0]**2 - distPM_P2[0]**2 - distPuntos[0]**2) / (-2 * distPM_P2[0] * distPuntos[0]) # Angulo B (segundo angulo formante) correspondiente al vertice del punto2.
-                            cosB = math.acos(B)
-                            anguloB = cosB * (180 / math.pi)
+                            B = (distPM_P1[0]**2 - distPM_P2[0]**2 - distPuntos[0]**2) / (-2 * distPM_P2[0] * distPuntos[0]); cosB = math.acos(B); anguloB = cosB * (180 / math.pi)
                 
-                            C = (distPuntos[0]**2 - distPM_P2[0]**2 - distPM_P1[0]**2) / (-2 * distPM_P2[0] * distPM_P1[0]) # Angulo C (tercer angulo formante) correspondiente al vertice del punto medio.
-                            cosC = math.acos(C)
-                            anguloC = cosC * (180 / math.pi)
+                            C = (distPuntos[0]**2 - distPM_P2[0]**2 - distPM_P1[0]**2) / (-2 * distPM_P2[0] * distPM_P1[0]); cosC = math.acos(C); anguloC = cosC * (180 / math.pi)
 
-                            angA = math.radians(anguloA)
-                            m = distPM_P1[0] * math.cos(angA)
-
-                            angB = math.radians(anguloB)
-                            n = distPM_P2[0] * math.cos(angB)
+                            angA = math.radians(anguloA); m = distPM_P1[0] * math.cos(angA)
+                            angB = math.radians(anguloB); n = distPM_P2[0] * math.cos(angB)
 
                             razon = m / n # Razon entre segmentos
-                            X = ((laux[0][0] + (razon * laux[1][0])) / (1 + razon)) # Punto X de la intersección.
-                            Y = ((laux[0][1] + (razon * laux[1][1])) / (1 + razon)) # Punto Y de la intersección.
+                            X = ((laux[0][0] + (razon * laux[1][0])) / (1 + razon)); Y = ((laux[0][1] + (razon * laux[1][1])) / (1 + razon))
 
                             """##### Segundo Segmento #####
                             ############################"""
-                            A_2 = (distPM_P2[1]**2 - distPM_P1[1]**2 - distPuntos[1]**2) / (-2 * distPM_P1[1] * distPuntos[1]) # Angulo A (primer angulo formante) correspondiente al vertice del punto 1.
-                            cosA_2 =math.acos(A_2)
-                            anguloA_2 = cosA_2 * (180 / math.pi)
+                            A_2 = (distPM_P2[1]**2 - distPM_P1[1]**2 - distPuntos[1]**2) / (-2 * distPM_P1[1] * distPuntos[1]); cosA_2 =math.acos(A_2); anguloA_2 = cosA_2 * (180 / math.pi)
 
-                            B_2 = (distPM_P1[1]**2 - distPM_P2[1]**2 - distPuntos[1]**2) / (-2 * distPM_P2[1] * distPuntos[1]) # Angulo B (segundo angulo formante) correspondiente al vertice del punto2.
-                            cosB_2 = math.acos(B_2)
-                            anguloB_2 = cosB_2 * (180 / math.pi)
+                            B_2 = (distPM_P1[1]**2 - distPM_P2[1]**2 - distPuntos[1]**2) / (-2 * distPM_P2[1] * distPuntos[1]); cosB_2 = math.acos(B_2); anguloB_2 = cosB_2 * (180 / math.pi)
                 
-                            C_2 = (distPuntos[1]**2 - distPM_P2[1]**2 - distPM_P1[1]**2) / (-2 * distPM_P2[1] * distPM_P1[1]) # Angulo C (tercer angulo formante) correspondiente al vertice del punto medio.
-                            cosC_2 = math.acos(C_2)
-                            anguloC_2 = cosC_2 * (180 / math.pi)
+                            C_2 = (distPuntos[1]**2 - distPM_P2[1]**2 - distPM_P1[1]**2) / (-2 * distPM_P2[1] * distPM_P1[1]); cosC_2 = math.acos(C_2); anguloC_2 = cosC_2 * (180 / math.pi)
 
-                            angA_2 = math.radians(anguloA_2)
-                            m_2 = distPM_P1[1] * math.cos(angA_2)
-
-                            angB_2 = math.radians(anguloB_2)
-                            n_2 = distPM_P2[1] * math.cos(angB_2)
+                            angA_2 = math.radians(anguloA_2); m_2 = distPM_P1[1] * math.cos(angA_2)
+                            angB_2 = math.radians(anguloB_2); n_2 = distPM_P2[1] * math.cos(angB_2)
 
                             razon_2 = m_2 / n_2 # Razon entre segmentos
-                            X_2 = ((laux[2][0] + (razon_2 * laux[3][0])) / (1 + razon_2)) # Punto X de la segunda intersección.
-                            Y_2 = ((laux[2][1] + (razon_2 * laux[3][1])) / (1 + razon_2)) # Punto Y de la segunda intersección.
+                            X_2 = ((laux[2][0] + (razon_2 * laux[3][0])) / (1 + razon_2)); Y_2 = ((laux[2][1] + (razon_2 * laux[3][1])) / (1 + razon_2))
+
+                            break
 
                         elif (listaComp[2] == 1 and listaComp[3] == 1):
-                            A = (distPM_P2[2]**2 - distPM_P1[2]**2 - distPuntos[2]**2) / (-2 * distPM_P1[2] * distPuntos[2]) # Angulo A (primer angulo formante) correspondiente al vertice del punto 1.
-                            cosA =math.acos(A)
-                            anguloA = cosA * (180 / math.pi)
+                            A = (distPM_P2[2]**2 - distPM_P1[2]**2 - distPuntos[2]**2) / (-2 * distPM_P1[2] * distPuntos[2]); cosA =math.acos(A); anguloA = cosA * (180 / math.pi)
 
-                            B = (distPM_P1[2]**2 - distPM_P2[2]**2 - distPuntos[2]**2) / (-2 * distPM_P2[2] * distPuntos[2]) # Angulo B (segundo angulo formante) correspondiente al vertice del punto2.
-                            cosB = math.acos(B)
-                            anguloB = cosB * (180 / math.pi)
+                            B = (distPM_P1[2]**2 - distPM_P2[2]**2 - distPuntos[2]**2) / (-2 * distPM_P2[2] * distPuntos[2]); cosB = math.acos(B); anguloB = cosB * (180 / math.pi)
                 
-                            C = (distPuntos[2]**2 - distPM_P2[2]**2 - distPM_P1[2]**2) / (-2 * distPM_P2[2] * distPM_P1[2]) # Angulo C (tercer angulo formante) correspondiente al vertice del punto medio.
-                            cosC = math.acos(C)
-                            anguloC = cosC * (180 / math.pi)
+                            C = (distPuntos[2]**2 - distPM_P2[2]**2 - distPM_P1[2]**2) / (-2 * distPM_P2[2] * distPM_P1[2]); cosC = math.acos(C); anguloC = cosC * (180 / math.pi)
 
-                            angA = math.radians(anguloA)
-                            m = distPM_P1[2] * math.cos(angA)
-
-                            angB = math.radians(anguloB)
-                            n = distPM_P2[2] * math.cos(angB)
+                            angA = math.radians(anguloA); m = distPM_P1[2] * math.cos(angA)
+                            angB = math.radians(anguloB); n = distPM_P2[2] * math.cos(angB)
 
                             razon = m / n # Razon entre segmentos
-                            X = ((laux[4][0] + (razon * laux[5][0])) / (1 + razon)) # Punto X de la intersección.
-                            Y = ((laux[4][1] + (razon * laux[5][1])) / (1 + razon)) # Punto Y de la intersección.
+                            X = ((laux[4][0] + (razon * laux[5][0])) / (1 + razon)); Y = ((laux[4][1] + (razon * laux[5][1])) / (1 + razon))
 
                             """##### Segundo Segmento #####
                             ############################"""
-                            A_2 = (distPM_P2[3]**2 - distPM_P1[3]**2 - distPuntos[3]**2) / (-2 * distPM_P1[3] * distPuntos[3]) # Angulo A (primer angulo formante) correspondiente al vertice del punto 1.
-                            cosA_2 =math.acos(A_2)
-                            anguloA_2 = cosA_2 * (180 / math.pi)
+                            A_2 = (distPM_P2[3]**2 - distPM_P1[3]**2 - distPuntos[3]**2) / (-2 * distPM_P1[3] * distPuntos[3]); cosA_2 =math.acos(A_2); anguloA_2 = cosA_2 * (180 / math.pi)
 
-                            B_2 = (distPM_P1[3]**2 - distPM_P2[3]**2 - distPuntos[3]**2) / (-2 * distPM_P2[3] * distPuntos[3]) # Angulo B (segundo angulo formante) correspondiente al vertice del punto2.
-                            cosB_2 = math.acos(B_2)
-                            anguloB_2 = cosB_2 * (180 / math.pi)
+                            B_2 = (distPM_P1[3]**2 - distPM_P2[3]**2 - distPuntos[3]**2) / (-2 * distPM_P2[3] * distPuntos[3]); cosB_2 = math.acos(B_2); anguloB_2 = cosB_2 * (180 / math.pi)
                 
-                            C_2 = (distPuntos[3]**2 - distPM_P2[3]**2 - distPM_P1[3]**2) / (-2 * distPM_P2[3] * distPM_P1[3]) # Angulo C (tercer angulo formante) correspondiente al vertice del punto medio.
-                            cosC_2 = math.acos(C_2)
-                            anguloC_2 = cosC_2 * (180 / math.pi)
+                            C_2 = (distPuntos[3]**2 - distPM_P2[3]**2 - distPM_P1[3]**2) / (-2 * distPM_P2[3] * distPM_P1[3]); cosC_2 = math.acos(C_2); anguloC_2 = cosC_2 * (180 / math.pi)
 
-                            angA_2 = math.radians(anguloA_2)
-                            m_2 = distPM_P1[3] * math.cos(angA_2)
-
-                            angB_2 = math.radians(anguloB_2)
-                            n_2 = distPM_P2[3] * math.cos(angB_2)
+                            angA_2 = math.radians(anguloA_2); m_2 = distPM_P1[3] * math.cos(angA_2)
+                            angB_2 = math.radians(anguloB_2); n_2 = distPM_P2[3] * math.cos(angB_2)
 
                             razon_2 = m_2 / n_2 # Razon entre segmentos
-                            X_2 = ((laux[6][0] + (razon_2 * laux[7][0])) / (1 + razon_2)) # Punto X de la segunda intersección.
-                            Y_2 = ((laux[6][1] + (razon_2 * laux[7][1])) / (1 + razon_2)) # Punto Y de la segunda intersección.
+                            X_2 = ((laux[6][0] + (razon_2 * laux[7][0])) / (1 + razon_2)); Y_2 = ((laux[6][1] + (razon_2 * laux[7][1])) / (1 + razon_2))
+
+                            break
 
                         elif (listaComp[4] == 1 and listaComp[5] == 1):
-                            A = (distPM_P2[4]**2 - distPM_P1[4]**2 - distPuntos[4]**2) / (-2 * distPM_P1[4] * distPuntos[4]) # Angulo A (primer angulo formante) correspondiente al vertice del punto 1.
-                            cosA =math.acos(A)
-                            anguloA = cosA * (180 / math.pi)
+                            A = (distPM_P2[4]**2 - distPM_P1[4]**2 - distPuntos[4]**2) / (-2 * distPM_P1[4] * distPuntos[4]); cosA =math.acos(A); anguloA = cosA * (180 / math.pi)
 
-                            B = (distPM_P1[4]**2 - distPM_P2[4]**2 - distPuntos[4]**2) / (-2 * distPM_P2[4] * distPuntos[4]) # Angulo B (segundo angulo formante) correspondiente al vertice del punto2.
-                            cosB = math.acos(B)
-                            anguloB = cosB * (180 / math.pi)
+                            B = (distPM_P1[4]**2 - distPM_P2[4]**2 - distPuntos[4]**2) / (-2 * distPM_P2[4] * distPuntos[4]); cosB = math.acos(B); anguloB = cosB * (180 / math.pi)
                 
-                            C = (distPuntos[4]**2 - distPM_P2[4]**2 - distPM_P1[4]**2) / (-2 * distPM_P2[4] * distPM_P1[4]) # Angulo C (tercer angulo formante) correspondiente al vertice del punto medio.
-                            cosC = math.acos(C)
-                            anguloC = cosC * (180 / math.pi)
+                            C = (distPuntos[4]**2 - distPM_P2[4]**2 - distPM_P1[4]**2) / (-2 * distPM_P2[4] * distPM_P1[4]); cosC = math.acos(C); anguloC = cosC * (180 / math.pi)
                             
-                            angA = math.radians(anguloA)
-                            m = distPM_P1[4] * math.cos(angA)
-
-                            angB = math.radians(anguloB)
-                            n = distPM_P2[4] * math.cos(angB)
+                            angA = math.radians(anguloA); m = distPM_P1[4] * math.cos(angA)
+                            angB = math.radians(anguloB); n = distPM_P2[4] * math.cos(angB)
                             
                             razon = m / n # Razon entre segmentos
-                            X = ((laux[8][0] + (razon * laux[9][0])) / (1 + razon)) # Punto X de la intersección.
-                            Y = ((laux[8][1] + (razon * laux[9][1])) / (1 + razon)) # Punto Y de la intersección.
+                            X = ((laux[8][0] + (razon * laux[9][0])) / (1 + razon)); Y = ((laux[8][1] + (razon * laux[9][1])) / (1 + razon))
 
                             """##### Segundo Segmento #####
                             ############################"""
-                            A_2 = (distPM_P2[5]**2 - distPM_P1[5]**2 - distPuntos[5]**2) / (-2 * distPM_P1[5] * distPuntos[5]) # Angulo A (primer angulo formante) correspondiente al vertice del punto 1.
-                            cosA_2 =math.acos(A)
-                            anguloA_2 = cosA * (180 / math.pi)
+                            A_2 = (distPM_P2[5]**2 - distPM_P1[5]**2 - distPuntos[5]**2) / (-2 * distPM_P1[5] * distPuntos[5]); cosA_2 =math.acos(A_2); anguloA_2 = cosA_2 * (180 / math.pi)
 
-                            B_2 = (distPM_P1[5]**2 - distPM_P2[5]**2 - distPuntos[5]**2) / (-2 * distPM_P2[5] * distPuntos[5]) # Angulo B (segundo angulo formante) correspondiente al vertice del punto2.
-                            cosB_2 = math.acos(B)
-                            anguloB_2 = cosB * (180 / math.pi)
+                            B_2 = (distPM_P1[5]**2 - distPM_P2[5]**2 - distPuntos[5]**2) / (-2 * distPM_P2[5] * distPuntos[5]); cosB_2 = math.acos(B_2); anguloB_2 = cosB_2 * (180 / math.pi)
                 
-                            C_2 = (distPuntos[5]**2 - distPM_P2[5]**2 - distPM_P1[5]**2) / (-2 * distPM_P2[5] * distPM_P1[5]) # Angulo C (tercer angulo formante) correspondiente al vertice del punto medio.
-                            cosC_2 = math.acos(C_2)
-                            anguloC_2 = cosC_2 * (180 / math.pi)
+                            C_2 = (distPuntos[5]**2 - distPM_P2[5]**2 - distPM_P1[5]**2) / (-2 * distPM_P2[5] * distPM_P1[5]); cosC_2 = math.acos(C_2); anguloC_2 = cosC_2 * (180 / math.pi)
 
-                            angA_2 = math.radians(anguloA_2)
-                            m_2 = distPM_P1[5] * math.cos(angA_2)
-
-                            angB_2 = math.radians(anguloB_2)
-                            n_2 = distPM_P2[5] * math.cos(angB_2)
+                            angA_2 = math.radians(anguloA_2); m_2 = distPM_P1[5] * math.cos(angA_2)
+                            angB_2 = math.radians(anguloB_2); n_2 = distPM_P2[5] * math.cos(angB_2)
 
                             razon_2 = m_2 / n_2 # Razon entre segmentos
-                            X_2 = ((laux[10][0] + (razon_2 * laux[11][0])) / (1 + razon_2)) # Punto X de la intersección.
-                            Y_2 = ((laux[10][1] + (razon_2 * laux[11][1])) / (1 + razon_2)) # Punto Y de la intersección.
+                            X_2 = ((laux[10][0] + (razon_2 * laux[11][0])) / (1 + razon_2)); Y_2 = ((laux[10][1] + (razon_2 * laux[11][1])) / (1 + razon_2))
+
+                            break
 
                 try:
                     punto_Segmento1 = QtCore.QPointF(X,Y)
-                    print(punto_Segmento1)
+                    #print(punto_Segmento1)
                     punto_Segmento2 = QtCore.QPointF(X_2,Y_2)
-                    print(punto_Segmento2)
+                    #print(punto_Segmento2)
                     lineaNuevaPared = QtCore.QLineF(punto_Segmento1, punto_Segmento2)
-                    print(lineaNuevaPared)
+                    #print(lineaNuevaPared)
                 
                     punto_medio = QtCore.QPointF(x_pm, y_pm) # Coordenada x e y del punto medio.
                     punto_human = QtCore.QPointF(x1, y1) # Coordenada humano 1.
                     punto_human2 = QtCore.QPointF(x2, y2) # Coordenada humano 2.
-                    print(punto_medio)
-                    print(punto_human)
-                    print(punto_human2)
+                    #print(punto_medio)
+                    #print(punto_human)
+                    #print(punto_human2)
+                    
+                    # Comprobación de la nueva pared. Funciona correctamente 
+                    self.addLine(lineaNuevaPared)
+
+                    #self.line = Line()
+                    #self.line.addLine(lineaNuevaPared)
+                    #self.addItem(self.line)
                     
                 except UnboundLocalError:
                     break
@@ -746,10 +648,9 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
 
                  
             self.robot = Robot()
-            self.robot.setPos(0,0)
+            self.robot.setPos(0, 0)
             #self.addItem(self.robot)
 
 
         self.text = 'Humans:' + str(len(self.humans)) + ' ' + 'Objects:' + str(len(self.objects))
- 
 
