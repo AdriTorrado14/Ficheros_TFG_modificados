@@ -336,7 +336,7 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
             # Para poder calcular los puntos de la nueva pared que pasan por el punto medio se necesitan que dos o mas segmentos
             # sean paralelos. Funciona para 6 o menos segmentos.
             
-            if ((len(posiciones) <= 3 and len(posiciones) != 0) and (contador == 2 or contador == 4 or contador == 6)): 
+            if ((len(posiciones) <= 3 and len(posiciones) != 0) and (contador == 2 or contador == 4 or contador == 6) and not(len(posiciones) == 2 and contador == 6)): 
                 for m in range(len(posiciones)):
                     for h in range(len(posiciones[m])):
                         auxiliar = posiciones[m][h]
@@ -599,38 +599,18 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
                     # Comprobación de la nueva pared. Funciona correctamente 
                     self.addLine(lineaNuevaPared)
 
+                    #################################################################################
+                    # Poner condiciones intersects para que no cruze la pared por encima de un humano.
+
+                    #################################################################################
+                    # Añadir los nuevos puntos a la polilinea.
+
                     #self.line = Line()
                     #self.line.addLine(lineaNuevaPared)
                     #self.addItem(self.line)
                     
                 except UnboundLocalError:
                     break
-                
-                                
-
-
-
-            # Transformación de coordenadas rectangulares a coordenadas polares
-
-            """for i in puntos:
-                x = len(puntos)
-                #print(x-1)
-                if x > 0:
-                    lista_vertices = np.arange(x)
-                    #print(lista_vertices)
-                    for j in lista_vertices:
-                        k = 0
-                        m = 1
-                        coordenada1 = puntos[j][k]
-                        coordenada2 = puntos[j][m]
-                        x_dis = math.sqrt(coordenada1*coordenada1 + coordenada2*coordenada2)
-                        x_ang = int(int(180.*math.atan2(coordenada2, coordenada1)/math.pi)+90.)
-                        if x_ang > 180.:
-                            x_ang = -360.+x_ang
-                        coordenada_general = [x_dis, x_ang]
-                        print(coordenada_general)
-                    break"""
-
             
             # Dibujar: linea entre vertices, punto en la posición punto medio, dibujar linea que une los dos humanos.
 
