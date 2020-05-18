@@ -611,22 +611,7 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
                     
                 except UnboundLocalError:
                     break
-            
-            # Dibujar: linea entre vertices, punto en la posición punto medio, dibujar linea que une los dos humanos.
-
-            """#self.colour = QtCore.Qt.red
-            #self.room.addLine(lineaNuevaPared, colour)
-            #self.addItem(self.room)"""
-
-            """# Dibujar un punto en el punto medio de los dos humanos.
-            #self.room = Room()
-            #self.room.drawPoint(x_pm,y_pm)
-            #self.addItem(self.room)
-            #self.room.drawPoint(x_pm,y_pm)
-            #self.room.addLine(float(x1),float(y1),x2,y2,self.linea_color)
-            #self.addItem(self.room)"""
-
-                 
+                             
             self.robot = Robot()
             self.robot.setPos(0, 0)
             #self.addItem(self.robot)
