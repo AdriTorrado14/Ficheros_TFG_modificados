@@ -16,9 +16,8 @@ class Human(QtWidgets.QGraphicsItem):
         self.setAngle(angle)
         self.setPos(self.xPos, self.yPos)
         self.setZValue(1)
-        #self.colour = QtCore.Qt.blue
-        self.colour = QtCore.Qt.transparent
-        self.pixmap = QtGui.QPixmap("C:/Users/adrit/AppData/Local/Programs/Python/Python37/Scripts/Scripts_Ficheros_Tarea1_Modificado/person.png")
+        self.colour = QtCore.Qt.transparent # Original: self.colour = QtCore.Qt.blue
+        self.pixmap = QtGui.QPixmap("person.png")
 
     @classmethod
     def from_json(Human, json_data):
@@ -53,6 +52,7 @@ class Human(QtWidgets.QGraphicsItem):
     def paint(self, painter, option, widget):
         painter.drawPixmap(self.BoundingRect.toRect(), self.pixmap)
 
+        # Codigo original
         """# Body
         painter.setBrush(self.colour)
         painter.drawEllipse(self.BoundingRect)
