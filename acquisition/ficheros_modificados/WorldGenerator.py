@@ -1,3 +1,4 @@
+
 import random
 import math
 import json
@@ -11,7 +12,7 @@ from robot import Robot
 from regularobject import RegularObject
 from room import Room
 from interaction import Interaction
-from line import Line 
+from line import Line
 
 from collections import defaultdict
 from scipy.spatial import distance
@@ -262,19 +263,27 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
             # Calculamos el punto medio de los dos humanos y asignamos ese punto a la estructura Qt. Se procede
             # de igual manera con el humano1 y el humano2.
 
-            x1 = human.xPos
-            y1 = human.yPos
-            x2 = human2.xPos
-            y2 = human2.yPos
-            x_pm = (x1 + x2)/2 
-            y_pm = (y1 + y2)/2
+            x1 = human.xPos; y1 = human.yPos
+            x2 = human2.xPos; y2 = human2.yPos
+            x_pm = (x1 + x2)/2; y_pm = (y1 + y2)/2
             hum = (x_pm, y_pm)
+
+            punto_medio = QtCore.QPointF(x_pm, y_pm) # Coordenada punto medio.
+            punto_human = QtCore.QPointF(x1, y1) # Coordenada humano 1.
+            punto_human2 = QtCore.QPointF(x2, y2) # Coordenada humano 2.
+
+            objetos = [] # Lista de objetos en el escenario.
+
+            objetos.append(punto_medio)
+            objetos.append(punto_human)
+            objetos.append(punto_human2)
 
             ############################################################################################
             # Procedimiento para el calculo de las pendientes de los distintos segmentos que forman el
             # escenario y reconocimiento de segmentos que son paralelos con sus respectivas pendientes.
     
             puntos =  [ [+point.x(), point.y()] for point in self.room.poly ] # Puntos que componen la habitacion.
+            habitacion_Modificada = self.room.poly # Estructura de la habitación.
             puntos_lista = []
             
             # Transformación de la lista anidadas "puntos" en una lista sin anidar.
@@ -329,6 +338,9 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
             contador = 0
             cont = 0
 
+            listaTemporal = []  
+            listaIndices = []
+            
             for m in range(len(posiciones)):
                 for h in range(len(posiciones[m])):
                     contador = contador +1
@@ -390,6 +402,9 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
                         break
                     elif (cont == 2):
                         if (listaComp[0] == 1 and listaComp[1] == 1):
+
+                            listaTemporal.append(posiciones[0])
+
                             # Para averiguar los angulos del vercite primero y el vertice segundo.
                             A = (distPM_P2[0]**2 - distPM_P1[0]**2 - distPuntos[0]**2) / (-2 * distPM_P1[0] * distPuntos[0]) # Angulo A (primer angulo formante) correspondiente al vertice del punto 1.
                             cosA =math.acos(A); anguloA = cosA * (180 / math.pi)
@@ -436,186 +451,154 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
                         
                     elif (cont == 4):
                         if (listaComp[0] == 1 and listaComp[1] == 1):
+                            listaTemporal.append(posiciones[0])
                             A = (distPM_P2[0]**2 - distPM_P1[0]**2 - distPuntos[0]**2) / (-2 * distPM_P1[0] * distPuntos[0]); cosA =math.acos(A); cosA =math.acos(A); anguloA = cosA * (180 / math.pi)
-
                             B = (distPM_P1[0]**2 - distPM_P2[0]**2 - distPuntos[0]**2) / (-2 * distPM_P2[0] * distPuntos[0]); cosB = math.acos(B); anguloB = cosB * (180 / math.pi)
-
                             C = (distPuntos[0]**2 - distPM_P2[0]**2 - distPM_P1[0]**2) / (-2 * distPM_P2[0] * distPM_P1[0]); cosC = math.acos(C); anguloC = cosC * (180 / math.pi)
-                
                             angA = math.radians(anguloA); m = distPM_P1[0] * math.cos(angA)
                             angB = math.radians(anguloB); n = distPM_P2[0] * math.cos(angB)
-
-                            razon = m / n # Razon entre segmentos
+                            razon = m / n 
                             X = ((laux[0][0] + (razon * laux[1][0])) / (1 + razon)); Y = ((laux[0][1] + (razon * laux[1][1])) / (1 + razon)) 
 
                             """##### Segundo Segmento #####
                             ############################"""
                             A_2 = (distPM_P2[1]**2 - distPM_P1[1]**2 - distPuntos[1]**2) / (-2 * distPM_P1[1] * distPuntos[1]); cosA_2 =math.acos(A_2); anguloA_2 = cosA_2 * (180 / math.pi)
-
                             B_2 = (distPM_P1[1]**2 - distPM_P2[1]**2 - distPuntos[1]**2) / (-2 * distPM_P2[1] * distPuntos[1]); cosB_2 = math.acos(B_2); anguloB_2 = cosB_2 * (180 / math.pi)
-                
                             C_2 = (distPuntos[1]**2 - distPM_P2[1]**2 - distPM_P1[1]**2) / (-2 * distPM_P2[1] * distPM_P1[1]); cosC_2 = math.acos(C_2); anguloC_2 = cosC_2 * (180 / math.pi)
-
                             angA_2 = math.radians(anguloA_2); m_2 = distPM_P1[1] * math.cos(angA_2)
                             angB_2 = math.radians(anguloB_2); n_2 = distPM_P2[1] * math.cos(angB_2)
-
-                            razon_2 = m_2 / n_2 # Razon entre segmentos
+                            razon_2 = m_2 / n_2 
                             X_2 = ((laux[2][0] + (razon_2 * laux[3][0])) / (1 + razon_2)); Y_2 = ((laux[2][1] + (razon_2 * laux[3][1])) / (1 + razon_2)) 
                             
                             break
                                                         
                         elif (listaComp[2] == 1 and listaComp[3] == 1):
+                            listaTemporal.append(posiciones[1])
                             A = (distPM_P2[2]**2 - distPM_P1[2]**2 - distPuntos[2]**2) / (-2 * distPM_P1[2] * distPuntos[2]); cosA =math.acos(A); anguloA = cosA * (180 / math.pi)
-
                             B = (distPM_P1[2]**2 - distPM_P2[2]**2 - distPuntos[2]**2) / (-2 * distPM_P2[2] * distPuntos[2]); cosB = math.acos(B); anguloB = cosB * (180 / math.pi)
-                
                             C = (distPuntos[2]**2 - distPM_P2[2]**2 - distPM_P1[2]**2) / (-2 * distPM_P2[2] * distPM_P1[2]); cosC = math.acos(C); anguloC = cosC * (180 / math.pi)
-    
                             angA = math.radians(anguloA); m = distPM_P1[2] * math.cos(angA)
                             angB = math.radians(anguloB); n = distPM_P2[2] * math.cos(angB)
-
-                            razon = m / n # Razon entre segmentos
+                            razon = m / n 
                             X = ((laux[4][0] + (razon * laux[5][0])) / (1 + razon)); Y = ((laux[4][1] + (razon * laux[5][1])) / (1 + razon))
                         
                             """##### Segundo Segmento #####
                             ############################"""
                             A_2 = (distPM_P2[3]**2 - distPM_P1[3]**2 - distPuntos[3]**2) / (-2 * distPM_P1[3] * distPuntos[3]); cosA_2 =math.acos(A_2); anguloA_2 = cosA_2 * (180 / math.pi)
-
                             B_2 = (distPM_P1[3]**2 - distPM_P2[3]**2 - distPuntos[3]**2) / (-2 * distPM_P2[3] * distPuntos[3]); cosB_2 = math.acos(B_2); anguloB_2 = cosB_2 * (180 / math.pi)
-                
                             C_2 = (distPuntos[3]**2 - distPM_P2[3]**2 - distPM_P1[3]**2) / (-2 * distPM_P2[3] * distPM_P1[3]); cosC_2 = math.acos(C_2); anguloC_2 = cosC_2 * (180 / math.pi)
-
                             angA_2 = math.radians(anguloA_2); m_2 = distPM_P1[3] * math.cos(angA_2)
                             angB_2 = math.radians(anguloB_2); n_2 = distPM_P2[3] * math.cos(angB_2)
-
-                            razon_2 = m_2 / n_2 # Razon entre segmentos
+                            razon_2 = m_2 / n_2 
                             X_2 = ((laux[6][0] + (razon_2 * laux[7][0])) / (1 + razon_2)); Y_2 = ((laux[6][1] + (razon_2 * laux[7][1])) / (1 + razon_2))
 
                             break
 
                     elif (cont == 6):
                         if (listaComp[0] == 1 and listaComp[1] == 1):
+                            listaTemporal.append(posiciones[0])
                             A = (distPM_P2[0]**2 - distPM_P1[0]**2 - distPuntos[0]**2) / (-2 * distPM_P1[0] * distPuntos[0]); cosA =math.acos(A); anguloA = cosA * (180 / math.pi)
-
                             B = (distPM_P1[0]**2 - distPM_P2[0]**2 - distPuntos[0]**2) / (-2 * distPM_P2[0] * distPuntos[0]); cosB = math.acos(B); anguloB = cosB * (180 / math.pi)
-                
                             C = (distPuntos[0]**2 - distPM_P2[0]**2 - distPM_P1[0]**2) / (-2 * distPM_P2[0] * distPM_P1[0]); cosC = math.acos(C); anguloC = cosC * (180 / math.pi)
-
                             angA = math.radians(anguloA); m = distPM_P1[0] * math.cos(angA)
                             angB = math.radians(anguloB); n = distPM_P2[0] * math.cos(angB)
-
-                            razon = m / n # Razon entre segmentos
+                            razon = m / n 
                             X = ((laux[0][0] + (razon * laux[1][0])) / (1 + razon)); Y = ((laux[0][1] + (razon * laux[1][1])) / (1 + razon))
 
                             """##### Segundo Segmento #####
                             ############################"""
                             A_2 = (distPM_P2[1]**2 - distPM_P1[1]**2 - distPuntos[1]**2) / (-2 * distPM_P1[1] * distPuntos[1]); cosA_2 =math.acos(A_2); anguloA_2 = cosA_2 * (180 / math.pi)
-
                             B_2 = (distPM_P1[1]**2 - distPM_P2[1]**2 - distPuntos[1]**2) / (-2 * distPM_P2[1] * distPuntos[1]); cosB_2 = math.acos(B_2); anguloB_2 = cosB_2 * (180 / math.pi)
-                
                             C_2 = (distPuntos[1]**2 - distPM_P2[1]**2 - distPM_P1[1]**2) / (-2 * distPM_P2[1] * distPM_P1[1]); cosC_2 = math.acos(C_2); anguloC_2 = cosC_2 * (180 / math.pi)
-
                             angA_2 = math.radians(anguloA_2); m_2 = distPM_P1[1] * math.cos(angA_2)
                             angB_2 = math.radians(anguloB_2); n_2 = distPM_P2[1] * math.cos(angB_2)
-
-                            razon_2 = m_2 / n_2 # Razon entre segmentos
+                            razon_2 = m_2 / n_2 
                             X_2 = ((laux[2][0] + (razon_2 * laux[3][0])) / (1 + razon_2)); Y_2 = ((laux[2][1] + (razon_2 * laux[3][1])) / (1 + razon_2))
 
                             break
 
                         elif (listaComp[2] == 1 and listaComp[3] == 1):
+                            listaTemporal.append(posiciones[1])
                             A = (distPM_P2[2]**2 - distPM_P1[2]**2 - distPuntos[2]**2) / (-2 * distPM_P1[2] * distPuntos[2]); cosA =math.acos(A); anguloA = cosA * (180 / math.pi)
-
                             B = (distPM_P1[2]**2 - distPM_P2[2]**2 - distPuntos[2]**2) / (-2 * distPM_P2[2] * distPuntos[2]); cosB = math.acos(B); anguloB = cosB * (180 / math.pi)
-                
                             C = (distPuntos[2]**2 - distPM_P2[2]**2 - distPM_P1[2]**2) / (-2 * distPM_P2[2] * distPM_P1[2]); cosC = math.acos(C); anguloC = cosC * (180 / math.pi)
-
                             angA = math.radians(anguloA); m = distPM_P1[2] * math.cos(angA)
                             angB = math.radians(anguloB); n = distPM_P2[2] * math.cos(angB)
-
-                            razon = m / n # Razon entre segmentos
+                            razon = m / n
                             X = ((laux[4][0] + (razon * laux[5][0])) / (1 + razon)); Y = ((laux[4][1] + (razon * laux[5][1])) / (1 + razon))
 
                             """##### Segundo Segmento #####
                             ############################"""
                             A_2 = (distPM_P2[3]**2 - distPM_P1[3]**2 - distPuntos[3]**2) / (-2 * distPM_P1[3] * distPuntos[3]); cosA_2 =math.acos(A_2); anguloA_2 = cosA_2 * (180 / math.pi)
-
                             B_2 = (distPM_P1[3]**2 - distPM_P2[3]**2 - distPuntos[3]**2) / (-2 * distPM_P2[3] * distPuntos[3]); cosB_2 = math.acos(B_2); anguloB_2 = cosB_2 * (180 / math.pi)
-                
                             C_2 = (distPuntos[3]**2 - distPM_P2[3]**2 - distPM_P1[3]**2) / (-2 * distPM_P2[3] * distPM_P1[3]); cosC_2 = math.acos(C_2); anguloC_2 = cosC_2 * (180 / math.pi)
-
                             angA_2 = math.radians(anguloA_2); m_2 = distPM_P1[3] * math.cos(angA_2)
                             angB_2 = math.radians(anguloB_2); n_2 = distPM_P2[3] * math.cos(angB_2)
-
-                            razon_2 = m_2 / n_2 # Razon entre segmentos
+                            razon_2 = m_2 / n_2 
                             X_2 = ((laux[6][0] + (razon_2 * laux[7][0])) / (1 + razon_2)); Y_2 = ((laux[6][1] + (razon_2 * laux[7][1])) / (1 + razon_2))
 
                             break
 
                         elif (listaComp[4] == 1 and listaComp[5] == 1):
+                            listaTemporal.append(posiciones[2])
                             A = (distPM_P2[4]**2 - distPM_P1[4]**2 - distPuntos[4]**2) / (-2 * distPM_P1[4] * distPuntos[4]); cosA =math.acos(A); anguloA = cosA * (180 / math.pi)
-
                             B = (distPM_P1[4]**2 - distPM_P2[4]**2 - distPuntos[4]**2) / (-2 * distPM_P2[4] * distPuntos[4]); cosB = math.acos(B); anguloB = cosB * (180 / math.pi)
-                
                             C = (distPuntos[4]**2 - distPM_P2[4]**2 - distPM_P1[4]**2) / (-2 * distPM_P2[4] * distPM_P1[4]); cosC = math.acos(C); anguloC = cosC * (180 / math.pi)
-                            
                             angA = math.radians(anguloA); m = distPM_P1[4] * math.cos(angA)
                             angB = math.radians(anguloB); n = distPM_P2[4] * math.cos(angB)
-                            
-                            razon = m / n # Razon entre segmentos
+                            razon = m / n 
                             X = ((laux[8][0] + (razon * laux[9][0])) / (1 + razon)); Y = ((laux[8][1] + (razon * laux[9][1])) / (1 + razon))
 
                             """##### Segundo Segmento #####
                             ############################"""
                             A_2 = (distPM_P2[5]**2 - distPM_P1[5]**2 - distPuntos[5]**2) / (-2 * distPM_P1[5] * distPuntos[5]); cosA_2 =math.acos(A_2); anguloA_2 = cosA_2 * (180 / math.pi)
-
                             B_2 = (distPM_P1[5]**2 - distPM_P2[5]**2 - distPuntos[5]**2) / (-2 * distPM_P2[5] * distPuntos[5]); cosB_2 = math.acos(B_2); anguloB_2 = cosB_2 * (180 / math.pi)
-                
                             C_2 = (distPuntos[5]**2 - distPM_P2[5]**2 - distPM_P1[5]**2) / (-2 * distPM_P2[5] * distPM_P1[5]); cosC_2 = math.acos(C_2); anguloC_2 = cosC_2 * (180 / math.pi)
-
                             angA_2 = math.radians(anguloA_2); m_2 = distPM_P1[5] * math.cos(angA_2)
                             angB_2 = math.radians(anguloB_2); n_2 = distPM_P2[5] * math.cos(angB_2)
-
-                            razon_2 = m_2 / n_2 # Razon entre segmentos
+                            razon_2 = m_2 / n_2 
                             X_2 = ((laux[10][0] + (razon_2 * laux[11][0])) / (1 + razon_2)); Y_2 = ((laux[10][1] + (razon_2 * laux[11][1])) / (1 + razon_2))
 
                             break
 
                 try:
-                    punto_Segmento1 = QtCore.QPointF(X,Y)
-                    #print(punto_Segmento1)
-                    punto_Segmento2 = QtCore.QPointF(X_2,Y_2)
-                    #print(punto_Segmento2)
-                    lineaNuevaPared = QtCore.QLineF(punto_Segmento1, punto_Segmento2)
-                    #print(lineaNuevaPared)
-                
-                    punto_medio = QtCore.QPointF(x_pm, y_pm) # Coordenada x e y del punto medio.
-                    punto_human = QtCore.QPointF(x1, y1) # Coordenada humano 1.
-                    punto_human2 = QtCore.QPointF(x2, y2) # Coordenada humano 2.
-                    #print(punto_medio)
-                    #print(punto_human)
-                    #print(punto_human2)
+                    punto_Segmento1 = QtCore.QPointF(X,Y) # Coordenada punto 1 de la nueva pared.
+
+                    punto_Segmento2 = QtCore.QPointF(X_2,Y_2) #Coordenada punto 2 de la nueva pared.
                     
-                    # Comprobación de la nueva pared. Funciona correctamente 
-                    self.addLine(lineaNuevaPared)
+                    lineaNuevaPared = QtCore.QLineF(punto_Segmento1, punto_Segmento2) # Linea de la nueva pared.
 
-                    #################################################################################
-                    # Poner condiciones intersects para que no cruze la pared por encima de un humano.
+                    lineaHumano = QtCore.QLineF()
+                    lineaHumano.setPoints(punto_human, punto_human2)
 
-                    #################################################################################
+                    lineaPared = QtCore.QLineF()
+                    lineaPared.setPoints(punto_Segmento1, punto_Segmento2)
+
+                    ####################################################################################
                     # Añadir los nuevos puntos a la polilinea.
 
-                    #self.line = Line()
-                    #self.line.addLine(lineaNuevaPared)
-                    #self.addItem(self.line)
+                    for yip in puntos:
+                        indices_Puntos = len(puntos)
+                        listaIndices = np.arange(indices_Puntos)
+
+                    for tip in range(len(listaIndices)):
+                        if listaTemporal[0][0] == listaIndices[tip]:
+                            habitacion_Modificada.insert(tip+1, punto_Segmento1) 
+                            habitacion_Modificada.insert(tip+2, punto_Segmento2)
+                            habitacion_Modificada.insert(tip+3, punto_Segmento1)
+                    
+                    ####################################################################################
+                    # Poner condiciones intersects para que no cruze la pared por encima de un humano.
+
                     
                 except UnboundLocalError:
                     break
-                             
+
+            #self.line = Line()
+                 
             self.robot = Robot()
             self.robot.setPos(0, 0)
             #self.addItem(self.robot)
 
 
         self.text = 'Humans:' + str(len(self.humans)) + ' ' + 'Objects:' + str(len(self.objects))
-
