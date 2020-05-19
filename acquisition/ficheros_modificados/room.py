@@ -11,21 +11,21 @@ def getRectRoom():
     #w = 180
     #h = 180
 
-    polygon = QtGui.QPolygon()
-    polygon.append( QtCore.QPoint(-w, -h) )
-    polygon.append( QtCore.QPoint(-w, +h) )
-    polygon.append( QtCore.QPoint(+w, +h) )
-    polygon.append( QtCore.QPoint(+w, -h) )
+    polygon = QtGui.QPolygonF()
+    polygon.append( QtCore.QPointF(-w, -h) )
+    polygon.append( QtCore.QPointF(-w, +h) )
+    polygon.append( QtCore.QPointF(+w, +h) )
+    polygon.append( QtCore.QPointF(+w, -h) )
     return polygon
 
 
 def getRobotPolygon():
     w = h = 25
-    polygon = QtGui.QPolygon()
-    polygon.append( QtCore.QPoint(-w, -h) )
-    polygon.append( QtCore.QPoint(-w, +h) )
-    polygon.append( QtCore.QPoint(+w, +h) )
-    polygon.append( QtCore.QPoint(+w, -h) )
+    polygon = QtGui.QPolygonF()
+    polygon.append( QtCore.QPointF(-w, -h) )
+    polygon.append( QtCore.QPointF(-w, +h) )
+    polygon.append( QtCore.QPointF(+w, +h) )
+    polygon.append( QtCore.QPointF(+w, -h) )
     return polygon
 
 
@@ -34,9 +34,9 @@ class Room(QtWidgets.QGraphicsItem):
         super(Room, self).__init__()
         self.poly = None
         if poly is not None:
-            self.poly = QtGui.QPolygon()
+            self.poly = QtGui.QPolygonF()
             for p in poly:
-                self.poly.append( QtCore.QPoint(p[0], p[1]) )
+                self.poly.append( QtCore.QPointF(p[0], p[1]) )
         else:
             # Generate a room so that the robot will be inside the room, not colliding with the walls
             robot = getRobotPolygon()
