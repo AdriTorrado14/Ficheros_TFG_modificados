@@ -16,7 +16,7 @@ class Human(QtWidgets.QGraphicsItem):
         self.setAngle(angle)
         self.setPos(self.xPos, self.yPos)
         self.setZValue(1)
-        self.colour = QtCore.Qt.transparent # Original: self.colour = QtCore.Qt.blue
+        self.colour = QtCore.Qt.transparent 
         self.pixmap = QtGui.QPixmap("person.png")
 
     @classmethod
@@ -52,16 +52,4 @@ class Human(QtWidgets.QGraphicsItem):
     def paint(self, painter, option, widget):
         painter.drawPixmap(self.BoundingRect.toRect(), self.pixmap)
 
-        # Codigo original
-        """# Body
-        painter.setBrush(self.colour)
-        painter.drawEllipse(self.BoundingRect)
-        # Eyes
-        painter.setBrush(QtCore.Qt.white)
-        painter.drawEllipse(+8-4, -8-4, 8, 8)
-        painter.drawEllipse(-8-4, -8-4, 8, 8)
-        # Pupils
-        painter.setBrush(QtCore.Qt.black)
-        painter.drawEllipse(QtCore.QRectF(-8-2, -9-2, 4, 4))
-        painter.drawEllipse(QtCore.QRectF(+8-2, -9-2, 4, 4))"""
 
