@@ -8,8 +8,6 @@ from polygonmisc import translatePolygon, movePolygon
 def getRectRoom():
     w = min(10, abs(random.normalvariate(1.5, 2.5))+1.5)/2 * 100
     h = min(10, abs(random.normalvariate(3.0, 2.5))+4.0)/2 * 100
-    #w = 180
-    #h = 180
 
     polygon = QtGui.QPolygonF()
     polygon.append( QtCore.QPointF(-w, -h) )
@@ -64,8 +62,6 @@ class Room(QtWidgets.QGraphicsItem):
                     pRobot = pRes.united(robot)
                     if len(pRes) == len(pRobot):
                         self.poly = pRes
-
-
 
     def boundingRect(self):
         return self.poly.boundingRect()
