@@ -12,7 +12,7 @@ from robot import Robot
 from regularobject import RegularObject
 from room import Room
 from interaction import Interaction
-from line import Line
+from linea import Linea
 
 from collections import defaultdict
 from scipy.spatial import distance
@@ -573,6 +573,9 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
 
                     lineaPared = QtCore.QLineF()
                     lineaPared.setPoints(punto_Segmento1, punto_Segmento2)
+                    
+                    linea = Linea(human, human2)
+                    self.addItem(linea)
 
                     ####################################################################################
                     # Añadir los nuevos puntos a la polilinea.
