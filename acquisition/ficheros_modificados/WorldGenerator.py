@@ -596,8 +596,6 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
                     
                 except UnboundLocalError:
                     break
-
-            #self.line = Line()
                  
             self.robot = Robot()
             self.robot.setPos(0, 0)
