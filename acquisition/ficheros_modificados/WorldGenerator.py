@@ -218,10 +218,6 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
             self.addItem(self.room)
 
             humanCount = 1
-            
-            # Codigo original
-            """if humanCount == 0:
-                humanCount = QtCore.qrand() % 3"""
 
             for i in range(humanCount):
                 human = self.generateHuman(availableId)
