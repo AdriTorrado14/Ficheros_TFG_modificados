@@ -217,13 +217,8 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
             self.room = Room()
             self.addItem(self.room)
 
-            # We generate a number of humans using the absolute of a normal
-            # variate with mean 1, sigma 4, capped to 15. If it's 15 we get
-            # the remainder of /15
-
             humanCount = 1
-            #humanCount = int(abs(random.normalvariate(1, 4))) % 15
-
+            
             # Codigo original
             """if humanCount == 0:
                 humanCount = QtCore.qrand() % 3"""
@@ -239,24 +234,6 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
                     availableId += 1
                     self.addItem(human2)
                     self.humans.append(human2)
-            
-                # Codigo original    
-                """if QtCore.qrand()%3 == 0:
-                    human2 = self.generateComplementaryHuman(human, availableId)
-                    availableId += 1
-                    self.addItem(human2)
-                    interaction = Interaction(human, human2)
-                    self.interactions.append(interaction)
-                    self.addItem(interaction)
-                    self.humans.append(human2)
-                elif QtCore.qrand()%2 == 0:
-                    obj = self.generateComplementaryObject(human, availableId)
-                    availableId += 1
-                    interaction = Interaction(human, obj)
-                    self.interactions.append(interaction)
-                    self.addItem(interaction)
-                    self.addItem(obj)
-                    self.objects.append(obj)"""
             
             ############################################################################################
             # Calculamos el punto medio de los dos humanos y asignamos ese punto a la estructura Qt. Se procede
@@ -277,7 +254,6 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
             ListaPoligonosHumanos = [] # Lista que guarda los objetos que aparecen en el escenario.
             ListaPoligonosHumanos.append(RectanguloHumano)
             ListaPoligonosHumanos.append(RectanguloHumano2)
-
 
             ############################################################################################
             # Procedimiento para el calculo de las pendientes de los distintos segmentos que forman el
@@ -390,7 +366,6 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
                 # distintas proyecciones y poder calcular los dos puntos nuevos. Estos dos puntos crearan un segmento que
                 # pasa por el punto medio de las personas y que divide el espacio de la habitación.
                 
-
                 # Transformación. Transformamos la lista anidada "lmod" que contiene los puntos formados por los segmentos que son
                 # paralelos en una lista sin anidar.
                 for mi in range(len(lmod)):
