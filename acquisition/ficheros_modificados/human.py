@@ -39,12 +39,12 @@ class Human(QtWidgets.QGraphicsItem):
     def polygon(self):
         w = 20
         h = 10
-        polygon = QtGui.QPolygon()
-        polygon.append( QtCore.QPoint(-w, -h) )
-        polygon.append( QtCore.QPoint(-w, +h) )
-        polygon.append( QtCore.QPoint(+w, +h) )
-        polygon.append( QtCore.QPoint(+w, -h) )
-        polygon.append( QtCore.QPoint(-w, -h) )
+        polygon = QtGui.QPolygonF()
+        polygon.append( QtCore.QPointF(-w, -h) )
+        polygon.append( QtCore.QPointF(-w, +h) )
+        polygon.append( QtCore.QPointF(+w, +h) )
+        polygon.append( QtCore.QPointF(+w, -h) )
+        polygon.append( QtCore.QPointF(-w, -h) )
         polygon = rotatePolygon(polygon, theta=self.angle*math.pi/180.)
         polygon = translatePolygon(polygon, tx=self.xPos, ty=self.yPos)
         return polygon
