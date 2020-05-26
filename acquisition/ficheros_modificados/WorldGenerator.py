@@ -1,4 +1,3 @@
-
 import random
 import math
 import json
@@ -272,11 +271,13 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
             punto_human = QtCore.QPointF(x1, y1) # Coordenada humano 1.
             punto_human2 = QtCore.QPointF(x2, y2) # Coordenada humano 2.
 
-            objetos = [] # Lista de objetos en el escenario.
+            # Asignación de los humanos como poligonos.
+            RectanguloHumano = human.polygon() # Humano 1.
+            RectanguloHumano2 = human2.polygon() # Humano 2.
+            ListaPoligonosHumanos = [] # Lista que guarda los objetos que aparecen en el escenario.
+            ListaPoligonosHumanos.append(RectanguloHumano)
+            ListaPoligonosHumanos.append(RectanguloHumano2)
 
-            objetos.append(punto_medio)
-            objetos.append(punto_human)
-            objetos.append(punto_human2)
 
             ############################################################################################
             # Procedimiento para el calculo de las pendientes de los distintos segmentos que forman el
@@ -340,6 +341,8 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
 
             listaTemporal = []  
             listaIndices = []
+            ListaParedN = []
+            ListaUnionHumanos = []
             
             for m in range(len(posiciones)):
                 for h in range(len(posiciones[m])):
@@ -568,34 +571,42 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
                     
                     lineaNuevaPared = QtCore.QLineF(punto_Segmento1, punto_Segmento2) # Linea de la nueva pared.
 
-                    lineaHumano = QtCore.QLineF()
-                    lineaHumano.setPoints(punto_human, punto_human2)
+                    lineaHumano = QtCore.QLineF(punto_human, punto_human2) # Linea de union de los humanos.
 
-                    lineaPared = QtCore.QLineF()
-                    lineaPared.setPoints(punto_Segmento1, punto_Segmento2)
-                    
-                    linea = Linea(human, human2)
-                    self.addItem(linea)
+                    # Asignación de la línea nueva como poligono y linea correspondiente a la union de los humanos.
 
-                    ####################################################################################
-                    # Añadir los nuevos puntos a la polilinea.
+                    ListaUnionHumanos.append(punto_human)
+                    ListaUnionHumanos.append(punto_human2)
 
-                    for yip in puntos:
-                        indices_Puntos = len(puntos)
-                        listaIndices = np.arange(indices_Puntos)
+                    PoligonoUnion = QtGui.QPolygonF()
+                    PoligonoUnion.append(ListaUnionHumanos)
 
-                    for tip in range(len(listaIndices)):
-                        if listaTemporal[0][0] == listaIndices[tip]:
-                            habitacion_Modificada.insert(tip+1, punto_Segmento1) 
-                            habitacion_Modificada.insert(tip+2, punto_Segmento2)
-                            habitacion_Modificada.insert(tip+3, punto_Segmento1)
-                    
+                    ListaParedN.append(punto_Segmento1)
+                    ListaParedN.append(punto_Segmento2)
+
+                    PoligonoLinea = QtGui.QPolygonF()
+                    PoligonoLinea.append(ListaParedN)
+
                     ####################################################################################
                     # Poner condiciones intersects para que no cruze la pared por encima de un humano.
+                    if ((PoligonoLinea.intersects(RectanguloHumano) == False) and (PoligonoLinea.intersects(RectanguloHumano2) == False) and (PoligonoUnion.intersects(PoligonoLinea) == True)):
+                        linea = Linea (human, human2)
+                        self.addItem(linea)
+                        ####################################################################################
+                        # Añadir los nuevos puntos a la polilinea.
+                        for yip in puntos:
+                            indices_Puntos = len(puntos)
+                            listaIndices = np.arange(indices_Puntos)
 
-                    
+                        for tip in range(len(listaIndices)):
+                            if listaTemporal[0][0] == listaIndices[tip]:
+                                habitacion_Modificada.insert(tip+1, punto_Segmento1) 
+                                habitacion_Modificada.insert(tip+2, punto_Segmento2)
+                                habitacion_Modificada.insert(tip+3, punto_Segmento1)                    
+
                 except UnboundLocalError:
                     break
+
                  
             self.robot = Robot()
             self.robot.setPos(0, 0)
