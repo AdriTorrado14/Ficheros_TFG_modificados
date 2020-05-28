@@ -12,6 +12,7 @@ from regularobject import RegularObject
 from room import Room
 from interaction import Interaction
 from linea import Linea
+from formacionPared import FormacionPared
 
 from collections import defaultdict
 from scipy.spatial import distance
@@ -231,10 +232,9 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
                     self.addItem(human2)
                     self.humans.append(human2)
             
-            ############################################################################################
+            """############################################################################################
             # Calculamos el punto medio de los dos humanos y asignamos ese punto a la estructura Qt. Se procede
             # de igual manera con el humano1 y el humano2.
-
             x1 = human.xPos; y1 = human.yPos
             x2 = human2.xPos; y2 = human2.yPos
             x_pm = (x1 + x2)/2; y_pm = (y1 + y2)/2
@@ -249,18 +249,20 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
             RectanguloHumano2 = human2.polygon() # Humano 2.
             ListaPoligonosHumanos = [] # Lista que guarda los objetos que aparecen en el escenario.
             ListaPoligonosHumanos.append(RectanguloHumano)
-            ListaPoligonosHumanos.append(RectanguloHumano2)
+            ListaPoligonosHumanos.append(RectanguloHumano2)"""
 
             ############################################################################################
             # Procedimiento para el calculo de las pendientes de los distintos segmentos que forman el
             # escenario y reconocimiento de segmentos que son paralelos con sus respectivas pendientes.
     
             puntos =  [ [+point.x(), point.y()] for point in self.room.poly ] # Puntos que componen la habitacion.
+
             habitacion_Modificada = self.room.poly # Estructura de la habitación.
-            puntos_lista = []
+
+            formacionPared = FormacionPared(puntos, human, human2, habitacion_Modificada)
             
             # Transformación de la lista anidadas "puntos" en una lista sin anidar.
-            for p in range(len(puntos)):
+            """for p in range(len(puntos)):
                 for j in range(len(puntos[p])):
                     puntos_lista.append(puntos[p][j])
 
@@ -399,8 +401,8 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
                             X = ((laux[0][0] + (razon * laux[1][0])) / (1 + razon)) # Punto X de la intersección.
                             Y = ((laux[0][1] + (razon * laux[1][1])) / (1 + razon)) # Punto Y de la intersección.
 
-                            """##### Segundo Segmento #####
-                            ############################"""
+                            ##### Segundo Segmento #####
+                            ############################
                 
                             A_2 = (distPM_P2[1]**2 - distPM_P1[1]**2 - distPuntos[1]**2) / (-2 * distPM_P1[1] * distPuntos[1]) # Angulo A (primer angulo formante) correspondiente al vertice del punto 1.
                             cosA_2 =math.acos(A_2); anguloA_2 = cosA_2 * (180 / math.pi)
@@ -434,8 +436,8 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
                             razon = m / n 
                             X = ((laux[0][0] + (razon * laux[1][0])) / (1 + razon)); Y = ((laux[0][1] + (razon * laux[1][1])) / (1 + razon)) 
 
-                            """##### Segundo Segmento #####
-                            ############################"""
+                            ##### Segundo Segmento #####
+                            ############################
                             A_2 = (distPM_P2[1]**2 - distPM_P1[1]**2 - distPuntos[1]**2) / (-2 * distPM_P1[1] * distPuntos[1]); cosA_2 =math.acos(A_2); anguloA_2 = cosA_2 * (180 / math.pi)
                             B_2 = (distPM_P1[1]**2 - distPM_P2[1]**2 - distPuntos[1]**2) / (-2 * distPM_P2[1] * distPuntos[1]); cosB_2 = math.acos(B_2); anguloB_2 = cosB_2 * (180 / math.pi)
                             C_2 = (distPuntos[1]**2 - distPM_P2[1]**2 - distPM_P1[1]**2) / (-2 * distPM_P2[1] * distPM_P1[1]); cosC_2 = math.acos(C_2); anguloC_2 = cosC_2 * (180 / math.pi)
@@ -456,8 +458,8 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
                             razon = m / n 
                             X = ((laux[4][0] + (razon * laux[5][0])) / (1 + razon)); Y = ((laux[4][1] + (razon * laux[5][1])) / (1 + razon))
                         
-                            """##### Segundo Segmento #####
-                            ############################"""
+                            ##### Segundo Segmento #####
+                            ############################
                             A_2 = (distPM_P2[3]**2 - distPM_P1[3]**2 - distPuntos[3]**2) / (-2 * distPM_P1[3] * distPuntos[3]); cosA_2 =math.acos(A_2); anguloA_2 = cosA_2 * (180 / math.pi)
                             B_2 = (distPM_P1[3]**2 - distPM_P2[3]**2 - distPuntos[3]**2) / (-2 * distPM_P2[3] * distPuntos[3]); cosB_2 = math.acos(B_2); anguloB_2 = cosB_2 * (180 / math.pi)
                             C_2 = (distPuntos[3]**2 - distPM_P2[3]**2 - distPM_P1[3]**2) / (-2 * distPM_P2[3] * distPM_P1[3]); cosC_2 = math.acos(C_2); anguloC_2 = cosC_2 * (180 / math.pi)
@@ -479,8 +481,8 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
                             razon = m / n 
                             X = ((laux[0][0] + (razon * laux[1][0])) / (1 + razon)); Y = ((laux[0][1] + (razon * laux[1][1])) / (1 + razon))
 
-                            """##### Segundo Segmento #####
-                            ############################"""
+                            ##### Segundo Segmento #####
+                            ############################
                             A_2 = (distPM_P2[1]**2 - distPM_P1[1]**2 - distPuntos[1]**2) / (-2 * distPM_P1[1] * distPuntos[1]); cosA_2 =math.acos(A_2); anguloA_2 = cosA_2 * (180 / math.pi)
                             B_2 = (distPM_P1[1]**2 - distPM_P2[1]**2 - distPuntos[1]**2) / (-2 * distPM_P2[1] * distPuntos[1]); cosB_2 = math.acos(B_2); anguloB_2 = cosB_2 * (180 / math.pi)
                             C_2 = (distPuntos[1]**2 - distPM_P2[1]**2 - distPM_P1[1]**2) / (-2 * distPM_P2[1] * distPM_P1[1]); cosC_2 = math.acos(C_2); anguloC_2 = cosC_2 * (180 / math.pi)
@@ -501,8 +503,8 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
                             razon = m / n
                             X = ((laux[4][0] + (razon * laux[5][0])) / (1 + razon)); Y = ((laux[4][1] + (razon * laux[5][1])) / (1 + razon))
 
-                            """##### Segundo Segmento #####
-                            ############################"""
+                            ##### Segundo Segmento #####
+                            ############################
                             A_2 = (distPM_P2[3]**2 - distPM_P1[3]**2 - distPuntos[3]**2) / (-2 * distPM_P1[3] * distPuntos[3]); cosA_2 =math.acos(A_2); anguloA_2 = cosA_2 * (180 / math.pi)
                             B_2 = (distPM_P1[3]**2 - distPM_P2[3]**2 - distPuntos[3]**2) / (-2 * distPM_P2[3] * distPuntos[3]); cosB_2 = math.acos(B_2); anguloB_2 = cosB_2 * (180 / math.pi)
                             C_2 = (distPuntos[3]**2 - distPM_P2[3]**2 - distPM_P1[3]**2) / (-2 * distPM_P2[3] * distPM_P1[3]); cosC_2 = math.acos(C_2); anguloC_2 = cosC_2 * (180 / math.pi)
@@ -523,8 +525,8 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
                             razon = m / n 
                             X = ((laux[8][0] + (razon * laux[9][0])) / (1 + razon)); Y = ((laux[8][1] + (razon * laux[9][1])) / (1 + razon))
 
-                            """##### Segundo Segmento #####
-                            ############################"""
+                            ##### Segundo Segmento #####
+                            ############################
                             A_2 = (distPM_P2[5]**2 - distPM_P1[5]**2 - distPuntos[5]**2) / (-2 * distPM_P1[5] * distPuntos[5]); cosA_2 =math.acos(A_2); anguloA_2 = cosA_2 * (180 / math.pi)
                             B_2 = (distPM_P1[5]**2 - distPM_P2[5]**2 - distPuntos[5]**2) / (-2 * distPM_P2[5] * distPuntos[5]); cosB_2 = math.acos(B_2); anguloB_2 = cosB_2 * (180 / math.pi)
                             C_2 = (distPuntos[5]**2 - distPM_P2[5]**2 - distPM_P1[5]**2) / (-2 * distPM_P2[5] * distPM_P1[5]); cosC_2 = math.acos(C_2); anguloC_2 = cosC_2 * (180 / math.pi)
@@ -576,8 +578,7 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
                                 habitacion_Modificada.insert(tip+3, punto_Segmento1)                    
 
                 except UnboundLocalError:
-                    break
-
+                    break"""
                  
             self.robot = Robot()
             self.robot.setPos(0, 0)
