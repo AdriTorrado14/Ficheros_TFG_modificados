@@ -261,6 +261,9 @@ class WorldGenerator(QtWidgets.QGraphicsScene):
 
             formacionPared = FormacionPared(puntos, human, human2, habitacion_Modificada)
             
+            linea = Linea(human, human2)
+            self.addItem(linea)
+            
             # Transformación de la lista anidadas "puntos" en una lista sin anidar.
             """for p in range(len(puntos)):
                 for j in range(len(puntos[p])):
