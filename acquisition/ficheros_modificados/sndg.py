@@ -13,7 +13,7 @@ except:
 import numpy as np
 from WorldGenerator import WorldGenerator
 
-from PySide2 import QtCore, QtGui, QtWidgets
+from PySide2 import QtCore, QtGui, QtWidgets 
 from ui_sndg import Ui_MainWindow
 
 def collate(sample):
@@ -28,6 +28,7 @@ class SNDG_APP(QtWidgets.QMainWindow):
         QtWidgets.QMainWindow.__init__(self, parent)
         self.world = None
         self.model = None
+        self.savePix = False
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.ui.graphicsView.show()
@@ -62,7 +63,10 @@ class SNDG_APP(QtWidgets.QMainWindow):
         textVal = str(self.ui.slider.value()).zfill(3)
         self.ui.statusbar.showMessage("send" + textVal)
         self.ui.sendButton.setEnabled(False)
-        self.world.serialize(self.ui.slider.value())
+        s= self.world.serialize(self.ui.slider.value())
+        if self.savePix:
+            myPixmap = QtWidgets.QWidget.grab(self.ui.graphicsView)
+            myPixmap.save(s['identifier']+".png")            
         self.on_getButton_clicked()
 
 
@@ -73,11 +77,11 @@ class SNDG_APP(QtWidgets.QMainWindow):
             self.on_estimateButton_clicked()
 
 
-    def generateDataset(self, number):
-        for i in range(number):
-            self.on_sendButton_clicked()
-
-
+    def generateDataset(self, number, savePix=False):
+        self.savePix = savePix        
+        for i in range(number):            
+            self.on_sendButton_clicked()            
+                    
     @QtCore.Slot()
     def on_estimateButton_clicked(self):
         import torch
@@ -168,7 +172,9 @@ if __name__ == "__main__":
     app.installEventFilter(sndg)
     sndg.populateWorld()
     sndg.show()
-
-    #sndg.generateDataset(25)
-    #sys.exit()
+        
+    #uncomment to generate a Dataset.
+    sndg.generateDataset(10,True) #True means store the pixmap when generate a Dataset. False not store    
+    
+    # sys.exit()
     sys.exit(app.exec_())
