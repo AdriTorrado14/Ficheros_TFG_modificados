@@ -37,7 +37,7 @@ class Linea (QtWidgets.QGraphicsItem):
         return self.BoundingRect
 
     def paint(self, painter, option, widget):
-        if (self.length > 35):
+        if (self.length > 75):
             painter.drawLine(self.lineaNueva)
             painter.drawStaticText(self.puntoMedio, self.text)
 
