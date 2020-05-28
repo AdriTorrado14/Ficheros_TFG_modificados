@@ -13,38 +13,39 @@ from scipy.spatial import distance
 class FormacionPared (QtWidgets.QGraphicsItem):
     def __init__(self, puntos, a, b, h):
         super(FormacionPared, self).__init__()
+
         regenerateScene = True
         while regenerateScene:
+
             regenerateScene = False
 
+            # Inicialización de los elementos que aparecen en la clase.
             self.puntos = puntos
             self.a = a
             self.b = b
             self.h = h
             habitacion_Modificada = self.h
 
-            puntos_lista = []
+            co1x = self.a.xPos # Coordenada 'x' del humano 1.
+            co1y = self.a.yPos # Coordenada 'y' del humano 1.
+            co1_2x = self.b.xPos # Coordenada 'x' del humano 2.
+            co1_2y = self.b.yPos # Coordenada 'y' del humano 2.
 
-            co1x = self.a.xPos
-            co1y = self.a.yPos
-            co1_2x = self.b.xPos
-            co1_2y = self.b.yPos
-
-            x_pm = (co1x + co1_2x) / 2
+            x_pm = (co1x + co1_2x) / 2 
             y_pm = (co1y + co1_2y) / 2
 
-            hum = (x_pm, y_pm) # Punto medio
+            hum = (x_pm, y_pm) # Punto medio de los humanos.
 
             self.puntoMedio = QtCore.QPointF(x_pm, y_pm) # Asignación punto medio.
 
             punto1 = QtCore.QPointF(co1x, co1y) # Asignación punto1.
-            punto2 = QtCore.QPointF(co1_2x, co1_2y) # Asignacion punto2
+            punto2 = QtCore.QPointF(co1_2x, co1_2y) # Asignacion punto2.
             self.lineaNueva = QtCore.QLineF(punto1, punto2) # Asignacion nueva linea.
 
             # Creación de puntos involucrados.
-            PuntoMedio = QtCore.QPointF(x_pm, y_pm)
-            punto_human = QtCore.QPointF(co1x, co1y) # Humano 1
-            punto_human2 = QtCore.QPointF(co1_2x, co1_2y) # Humano 2
+            PuntoMedio = QtCore.QPointF(x_pm, y_pm) # Punto medio de los humanos.
+            punto_human = QtCore.QPointF(co1x, co1y) # Punto humano 1.
+            punto_human2 = QtCore.QPointF(co1_2x, co1_2y) # Punto humano 2.
 
 
             # Asignación de los humanos como poligonos.
@@ -54,8 +55,11 @@ class FormacionPared (QtWidgets.QGraphicsItem):
             ListaPoligonosHumanos.append(RectanguloHumano)
             ListaPoligonosHumanos.append(RectanguloHumano2)
 
+            ############################################################################################
+            # Inicio del metodo que presenta la nueva pared del escenario.
 
             # Transformación de la lista anidadas "puntos" en una lista sin anidar.
+            puntos_lista = []
             for p in range(len(puntos)):
                 for j in range(len(puntos[p])):
                     puntos_lista.append(puntos[p][j])
@@ -83,13 +87,13 @@ class FormacionPared (QtWidgets.QGraphicsItem):
 
             # Convierte el diccionario en una lista.
             indices = list(result.keys()) # Guarda el valor de la pendiente si hay dos o más iguales.
-            # Guarda las posiciones en la que las pendientes son iguales. Si pusiera un [0,4] esto indica que las pendientes son iguales
+            # Guarda las posiciones en la que las pendientes son iguales. Si pusiera un [0,4] esto indica que las pendientes son iguales.
             # en los segmentos formados por los puntos 0 - 1 y por los puntos 4 - 5.
             posiciones = list(result.values())
 
             ############################################################################################
             # Procedimiento para ver si el punto medio esta situado entre los dos puntos que forman el segmento.
-            # Tenemos una lista que nos dice el valor de las pendientes, y otra lista que nos muestra los segmentos
+            # Tenemos una lista que nos dice el valor de las pendientes, y otra lista que nos muestra los segmentos.
             # con pendientes iguales. Si la pendiente es igual, esto nos indica que los segmentos son paralelos. 
 
             # Variables auxiliares.
@@ -116,7 +120,7 @@ class FormacionPared (QtWidgets.QGraphicsItem):
                 for h in range(len(posiciones[m])):
                     contador = contador +1
 
-            # Para poder calcular los puntos de la nueva pared que pasan por el punto medio se necesitan que dos o mas segmentos
+            # Para poder calcular los puntos de la nueva pared que pasan por el punto medio se necesitan que dos o mas segmentos.
             # sean paralelos. Funciona para 6 o menos segmentos.
             
             if ((len(posiciones) <= 3 and len(posiciones) != 0) and (contador == 2 or contador == 4 or contador == 6) and not(len(posiciones) == 2 and contador == 6)): 
@@ -340,8 +344,7 @@ class FormacionPared (QtWidgets.QGraphicsItem):
 
                     lineaHumano = QtCore.QLineF(punto_human, punto_human2) # Linea de union de los humanos.
 
-                    # Asignación de la línea nueva como poligono y linea correspondiente a la union de los humanos.
-
+                    # Asignación de la línea nueva como poligono y linea correspondiente a la union de los humanos como poligono.
                     ListaUnionHumanos.append(punto_human)
                     ListaUnionHumanos.append(punto_human2)
 
@@ -355,19 +358,11 @@ class FormacionPared (QtWidgets.QGraphicsItem):
                     PoligonoLinea.append(ListaParedN)
 
                     ####################################################################################
-                    # Poner condiciones intersects para que no cruze la pared por encima de un humano.
+                    # Condiciones para que la que la nueva pared formada en el escenario no intersecte con ningun humano.
+                    
                     if ((PoligonoLinea.intersects(RectanguloHumano) == False) and (PoligonoLinea.intersects(RectanguloHumano2) == False) and (PoligonoUnion.intersects(PoligonoLinea) == True)):
 
-
-                        #################################################
-                        # Añadir la clase linea para introducir el dibujo que queremos
-                        #linea = Linea (human, human2)
-                        #self.addItem(linea)
-
-
-
-                        ####################################################################################
-                        # Añadir los nuevos puntos a la polilinea.
+                        # Introducción de los nuevos puntos a la polilinea.
                         for yip in puntos:
                             indices_Puntos = len(puntos)
                             listaIndices = np.arange(indices_Puntos)
