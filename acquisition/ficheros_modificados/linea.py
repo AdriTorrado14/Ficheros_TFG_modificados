@@ -21,11 +21,10 @@ class Linea (QtWidgets.QGraphicsItem):
         s1 = co1x - co1_2x
         s2 = co1y - co1_2y
         d = math.sqrt(s1*s1 + s2*s2) # Distancia existente entre las dos coordenadas
-        dis = round(d, 2) # Redondeo de la distancia a 2 cifras decimales.
 
-        self.length = dis # Asignacion de la distantcia.
+        self.length = d # Asignacion de la distantcia.
 
-        self.text = QtGui.QStaticText(str(self.length/100) + ' m') # Texto
+        self.text = QtGui.QStaticText(f"{self.length/100:.2f}" + ' m') # Texto
 
         self.puntoMedio = QtCore.QPointF(XPuntoMedio, YPuntoMedio) # Asignación punto medio.
         self.BoundingRect = QtCore.QRectF(-10, -10, 20, 20) 
@@ -38,6 +37,6 @@ class Linea (QtWidgets.QGraphicsItem):
         return self.BoundingRect
 
     def paint(self, painter, option, widget):
-        if (self.length > 50):
+        if (self.length > 65):
             painter.drawLine(self.lineaNueva) # Linea que une la posicion de los dos humanos.
             painter.drawStaticText(self.puntoMedio, self.text) # Distancia en metros que presentan los dos humanos.
