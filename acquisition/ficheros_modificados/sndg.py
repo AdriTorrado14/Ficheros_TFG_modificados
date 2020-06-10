@@ -171,10 +171,10 @@ if __name__ == "__main__":
     sndg = SNDG_APP(sys.argv[1:])
     app.installEventFilter(sndg)
     sndg.populateWorld()
-    sndg.show()
+    #sndg.show()
         
     #uncomment to generate a Dataset.
-    sndg.generateDataset(10,True) #True means store the pixmap when generate a Dataset. False not store    
+    sndg.generateDataset(15000,True) #True means store the pixmap when generate a Dataset. False not store    
     
     # sys.exit()
     sys.exit(app.exec_())
